@@ -1,12 +1,29 @@
-﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-// See the 'F# Tutorial' project for more help.
+﻿(*
+author: recs
+date: 2021-02-05
+summary: generate .dxf files from opened documents in application cad solidedge.
+*)
 
-// Define a function to construct a message to print
-let from whom =
-    sprintf "from %s" whom
 
+open System
+open System.IO
+open SolidEdgeFramework
+open SolidEdgeCommunity.Extensions
+open SolidEdgeDraft
+
+[<STAThread>]
 [<EntryPoint>]
 let main argv =
-    let message = from "F#" // Call the function
-    printfn "Hello world %s" message
-    0 // return an integer exit code
+    try
+        SolidEdgeCommunity.OleMessageFilter.Register()
+        let application = SolidEdgeCommunity.SolidEdgeUtils.Connect(false)
+        let draft = application.ActiveDocument
+        let d = draft :?> DraftDocument
+        let a = d.PartsLists.Count
+        printfn "%i" a
+        0 // exit code
+
+    finally
+        SolidEdgeCommunity.OleMessageFilter.Unregister()
+        printfn "Press any key to exit"
+        Console.ReadKey() |> ignore
