@@ -20,26 +20,28 @@ let main argv =
         let document = application.ActiveDocument
         let draft = document :?> DraftDocument
         let bomQantity = draft.PartsLists.Count
-        
-        printfn "%i" bomQantity
 
-        let maxRowsPage1 = draft.PartsLists.[1].MaximumRowsFirstPage
-        let maxRowsPage2 = draft.PartsLists.[1].MaximumRowsAdditionalPages
+        printfn "Quantity of Part-list = %i" bomQantity
 
-        // back Bom data
-        // in the layout order
-        printfn "%s | %s |" "page2" "page1"
-        printfn "%i | %i |" maxRowsPage2 maxRowsPage1
+        printfn "-------------------------------------------------------------"
+        let maxRowsFirstPage = draft.PartsLists.[1].MaximumRowsFirstPage
+        let maxRowsAdditionalPages = draft.PartsLists.[1].MaximumRowsAdditionalPages
 
-        let maxHeigghtPage1 = draft.PartsLists.[1].MaximumHeightFirstPage
-        let maxHeightPage2 = draft.PartsLists.[1].MaximumHeightAdditionalPages
+        // Rows
+        printfn "%30s | %30s |" "RowsFirstPage" "RowsAdditionalPages"
+        printfn "%30i | %30i |" maxRowsFirstPage maxRowsAdditionalPages
 
-        // front Bom data
-        // in the layout order
-        printfn "%s | %s |" "page2" "page1"
-        printfn "%f | %f |" maxHeightPage2 maxHeigghtPage1
+        let maxHeightFirstPage = draft.PartsLists.[1].MaximumHeightFirstPage
+        let maxHeightAdditionalPages = draft.PartsLists.[1].MaximumHeightAdditionalPages
 
+        // Height in meter
+        printfn "%30s | %30s |" "HeightFirstPage (meter)" "HeightAdditionalPages (meter)"
+        printfn "%30f | %30f |" maxHeightFirstPage maxHeightAdditionalPages
 
+        // Height in meter
+        printfn "%30s | %30s |" "HeightFirstPage (inch )" "HeightAdditionalPages (inch )"
+        printfn "%30f | %30f |" (maxHeightFirstPage*39.3701) (maxHeightAdditionalPages*39.3701)
+        // we could round it 0.000
         0 // exit code
 
     finally
